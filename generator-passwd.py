@@ -1,52 +1,52 @@
 import string
 import secrets
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
+import pyperclip
 
-letters = string.ascii_letters
-numbers = string.digits
-symbols = string.punctuation
-generate = letters + numbers + symbols
+# constantes
+LETTERS = string.ascii_letters
+NUMBERS = string.digits
+SYMBOLS = string.punctuation
+GENERATE = LETTERS + NUMBERS + SYMBOLS
 
-length = 20  # add your own password_length
+# paramètres
+LENGTH = 20  # longueur du mot de passe
+VERSION = "1.1.0"  # version du programme
 
-password = "".join(secrets.choice(generate) for i in range(length))
+class PasswordGenerator:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Password Generator | Developed by : Noxious")
+        self.root.geometry("450x300")
+        self.password = self.generate_password(LENGTH)
+        self.password_label = None
+        self.create_widgets()
 
-# gen-version
-version = "0.0.0.1.4"
-print("Welcome on Password Generator")
-print("Developed by : Noxious")
-print("Gen-Version: " + version)
-name = input("Enter your name : ")
-print(password)
+    def generate_password(self, length):
+        return "".join(secrets.choice(GENERATE) for i in range(length))
 
-# create a window
-root = tk.Tk()
+    def create_widgets(self):
+        tk.Label(self.root, text="Welcome!", foreground="green", background="grey", width=100, font="Arial").pack()
+        self.password_label = tk.Label(self.root, text=f"Votre mot de passe est : {self.password}", foreground="green", background="grey", width=100, font="Arial")
+        self.password_label.pack()
+        tk.Button(self.root, text="Générer un nouveau mot de passe", command=self.generate_new_password).pack()
+        tk.Button(self.root, text="Copier le mot de passe", command=self.copy_password).pack()
+        tk.Button(self.root, text="Quitter", command=self.root.destroy).pack()
 
-# size of the window
-root.geometry("450x250")
+    def generate_new_password(self):
+        self.password = self.generate_password(LENGTH)
+        self.password_label['text'] = f"Votre nouveau mot de passe est : {self.password}"
 
-# window title
-root.title("Password Generator | Developed by : Noxious")
+    def copy_password(self):
+        pyperclip.copy(self.password)
+        messagebox.showinfo("Mot de passe copié", "Le mot de passe a été copié dans le presse-papier")
 
-# main text
-tk.Label(text="Welcome " + name + f",\n This is your password: {password} ", foreground="green",
-         background="grey", width=100, font="Arial").pack()
-
-# first button
-reset_btn = ttk.Button(root, text="RESET", command=lambda: generate_password(length))
-# second button
-copy_btn = ttk.Button(root, text="Copy Password", command=None)
-
-reset_btn.pack(ipadx=5, ipady=5, expand=True)
-copy_btn.pack(ipadx=4, ipady=4, expand=True)
-
-def generate_password(length):
-    global password
-    password = "".join(secrets.choice(generate) for i in range(length))
-    tk.Label(root, text=f"Your new password is: {password}", foreground="green", background="grey", width=100, font="Arial").pack()
-
-# window update
-root.update()
-# Main loop
-root.mainloop()
+    def run(self):
+        self.root.mainloop()
+if __name__ == "__main__":
+    print("Welcome on Password Generator")
+    print("Developed by : Nox")
+    print("Version: " + VERSION)
+    generator = PasswordGenerator()
+    generator.run()
