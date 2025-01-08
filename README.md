@@ -1,3 +1,3 @@
 # Password-Generator
-This is a Simple Password generator with an Interface with tkinter.
-New update will be soon.
+This is a Password generator with an Interface with tkinter.
+Last update: 2025-01-07 (V1.2)
