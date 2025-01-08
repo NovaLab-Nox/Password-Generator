@@ -11,14 +11,16 @@ SYMBOLS = string.punctuation
 GENERATE = LETTERS + NUMBERS + SYMBOLS
 
 # paramètres
-LENGTH = 20  # longueur du mot de passe
-VERSION = "1.1.0"  # version du programme
+LENGTH = 10  # longueur du mot de passe
+VERSION = "1.2.0"  # version du programme
 
 class PasswordGenerator:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Password Generator | Developed by : Noxious")
-        self.root.geometry("450x300")
+        self.root.title("Password Generator | Developed by : Nox")
+        self.root.geometry("645x350")
+        style = ttk.Style()
+        style.theme_use("clam")
         self.password = self.generate_password(LENGTH)
         self.password_label = None
         self.create_widgets()
@@ -27,8 +29,9 @@ class PasswordGenerator:
         return "".join(secrets.choice(GENERATE) for i in range(length))
 
     def create_widgets(self):
-        tk.Label(self.root, text="Welcome!", foreground="green", background="grey", width=100, font="Arial").pack()
-        self.password_label = tk.Label(self.root, text=f"Votre mot de passe est : {self.password}", foreground="green", background="grey", width=100, font="Arial")
+        tk.Label(self.root, text="Password Generator", font=("Courier", 24), foreground="#ff0000", background="#000000",
+                 borderwidth=2, relief="raised").pack()
+        self.password_label = tk.Label(self.root, text=f"Votre mot de passe est : {self.password}", foreground="#ff0000", background="#000000", width=100, font="Courier")
         self.password_label.pack()
         tk.Button(self.root, text="Générer un nouveau mot de passe", command=self.generate_new_password).pack()
         tk.Button(self.root, text="Copier le mot de passe", command=self.copy_password).pack()
