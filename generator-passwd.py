@@ -3,7 +3,8 @@ import secrets
 import tkinter as tk
 from tkinter import ttk, messagebox
 import pyperclip
-
+import cryptography
+from cryptography.fernet import Fernet
 # constantes
 LETTERS = string.ascii_letters
 NUMBERS = string.digits
@@ -12,7 +13,7 @@ GENERATE = LETTERS + NUMBERS + SYMBOLS
 
 # paramètres
 LENGTH = 10  # longueur du mot de passe
-VERSION = "1.2.0"  # version du programme
+VERSION = "1.2.2"  # version du programme
 
 class PasswordGenerator:
     def __init__(self):
@@ -26,7 +27,21 @@ class PasswordGenerator:
         self.create_widgets()
 
     def generate_password(self, length):
-        return "".join(secrets.choice(GENERATE) for i in range(length))
+        alphabet = string.ascii_letters + string.digits + string.punctuation
+        password = ''.join(secrets.choice(alphabet) for i in range(length))
+        return password
+
+    def hash_password(password):
+        import hashlib
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+        return hashed_password
+
+    def store_password(password):
+        # utiliser un mécanisme de chiffrement pour stocker le mot de passe
+        key = Fernet.generate_key()
+        cipher_suite = Fernet(key)
+        cipher_text = cipher_suite.encrypt(password.encode())
+        return cipher_text
 
     def create_widgets(self):
         tk.Label(self.root, text="Password Generator", font=("Courier", 24), foreground="#ff0000", background="#000000",
